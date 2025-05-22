@@ -365,13 +365,13 @@ class CompilationUnit:
 
     def compile_local_project(
         self,
-        toml_path: pathlib.Path,
+        project_path: pathlib.Path,
         features: list[str] = (),
         verb: str | None = "build",
-        additional_args: list[str] = (),
+        additional_args: list[str] = [],
     ):
-        self.compile_project(toml_path.parent, features, verb=verb, additional_args=additional_args)
-        return self._get_result_files(toml_path.parent)
+        self.compile_project(project_path, features, verb=verb, additional_args=additional_args)
+        return self._get_result_files(project_path)
 
     def compile_remote_crate(
         self,
