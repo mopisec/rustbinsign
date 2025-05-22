@@ -14,7 +14,8 @@ class ConfigIDA(Config):
 
     def model_post_init(self, __context):
         # ida64 should work for both 32 and 64 bits executables since IDA 8 or so
-        if not shutil.which("idat64"):
+        # For IDA 9, same kind of executable exists as "idat"
+        if not shutil.which("idat64") and not shutil.which("idat"):
             print('Could not find "idat64" in your Path, aborting.', file=sys.stderr)
             exit(1)
 
@@ -22,5 +23,9 @@ class ConfigIDA(Config):
             print('Could not find "sigmake" in your Path, aborting.', file=sys.stderr)
             exit(1)
 
-        self.idat = pathlib.Path(shutil.which("idat64"))
+        idat_path = shutil.which("idat64")
+        if idat_path == None:
+            idat_path = shutil.which("idat")
+        self.idat = pathlib.Path(idat_path)
+        
         self.sigmake = pathlib.Path(shutil.which("sigmake"))
